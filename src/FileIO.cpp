@@ -32,17 +32,17 @@ class WAVDATA
 	
 	public:
 	  char * fName;
-          int nChannels;
-          int Fs;
-          double * audio;
+      int nChannels;
+      int Fs;
+      double * audio;
 	  int L;
-	WAVDATA(char * s)
+	WAVDATA()
 		{
-		readWav(s);	
+		//readWav(s);	
 		}
 	~WAVDATA()
 		{
-		std::cout << "Destructor" << endl;
+		std::cout << "Call destructor : class WAVDATA" << endl;
 		delete [] audio;
 		}
  	
@@ -52,10 +52,10 @@ class WAVDATA
 	/*
 	readWav(double * audio)
 	*/
-              void readWav(char * fName)
+    void readWav(char * fName)
 		{
-		//get file info - num_channels, sampling rate
-                  SNDFILE *sf;
+		 //get file info - num_channels, sampling rate
+          SNDFILE *sf;
 		  SF_INFO info;
 		  sf = sf_open(fName,SFM_READ,&info);
 		  if (sf == NULL)
@@ -77,6 +77,28 @@ class WAVDATA
 		int num=sf_read_double(sf,audio,num_items);
 		sf_close(sf);
 		}
-             void writeWav(double * audio,char * fName)
-	        {}
+
+
+    void writeWav(char * fName, float _Fs, double * _data, int _L)
+        {
+        SNDFILE *write_sf;
+        SF_INFO write_info;
+
+        write_info.format       = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+        write_info.channels     = 1;
+        write_info.samplerate   = _Fs;
+
+        audio = new double[_L];
+        for (int n = 0; n < _L; n++)
+        {
+        audio[n] = _data[n];
+        //cout << audio[n]<<endl;
+        }
+
+        write_sf= sf_open(fName,SFM_WRITE,&write_info);
+        long writtenFrames = sf_writef_double(write_sf,audio,_L);
+        sf_write_sync(write_sf);
+        sf_close(write_sf);
+        cout << "WrittenFrames : \n" << writtenFrames << endl;
+        }
 	};
