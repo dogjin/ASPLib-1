@@ -13,12 +13,31 @@ using namespace std;
 
 int main()
 	{
-    char * outFile = "/home/vvekkumar/code/data/test/gen_chirp.wav";
+    char * outFile1 = "/home/vvekkumar/code/data/test/gen_chirp.wav";
     //generate signal
-    generator chirp(16000,800,4000,30);
-
+    char * type = "chirp";
+    generator signal1(type);
     //write to file
     WAVDATA f;
-    f.writeWav(outFile,chirp.Fs,chirp.data,chirp.num_samples);
-	return 0;
+    f.writeWav(outFile1,signal1.Fs,signal1.data,signal1.num_samples);
+
+
+	char * outFile2 = "/home/vvekkumar/code/data/test/silence.wav";
+    //generate signal
+    char * type1 = "silence";
+    generator signal2(type1);
+    //write to file
+    WAVDATA f1;
+    f1.writeWav(outFile2,signal2.Fs,signal2.data,signal2.num_samples);
+
+
+
+  char * outFile3 = "/home/vvekkumar/code/data/test/sine.wav";
+  //generate signal
+  char * type2 = "tone";
+  generator signal3(type2);
+  //write to file
+  WAVDATA f2;
+  f2.writeWav(outFile3,signal3.Fs,signal3.data,signal3.num_samples);
+  return 0;
 	}
